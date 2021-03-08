@@ -1,0 +1,26 @@
+<form method="post">
+{% csrf_token %}
+<select name="c">
+{% for cats in cat %}
+    <option value='{{ cats.category_id }}'>
+        {{ cats.category }}
+    </option>
+{% endfor %}
+</select>
+<select name="e">
+{% for T in TE %}
+    <option value='{{ T.tevent_id }}'>
+        {{ T.events }}
+    </option>
+{% endfor %}
+</select>
+<button type="submit">Go</button>
+<select name="t">
+{% for teams in team %}
+    <option value="{{ teams.id }}">
+    {{ teams.team_name }}
+{% endfor %}
+</select>
+<a href="/Display">Go</a>
+</form>
+<br><br>

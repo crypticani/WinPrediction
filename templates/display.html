@@ -1,0 +1,11 @@
+<form method = "post" action = "/Display">
+{% csrf_token %}
+{% for mydata in data %}
+{{ mydata.player_name }}&nbsp; {{ mydata.id_number }} &nbsp; {{ mydata.is_active }}
+{% if mydata.is_active == True %}
+    <button name="active" value="{{ mydata.player_id }}" >Remove</button> <br>
+{% elif mydata.is_active == False %}
+     <button name="active" value="{{ mydata.player_id }}" >Add</button> <br>
+{% endif %}
+{% endfor %}
+</form>
