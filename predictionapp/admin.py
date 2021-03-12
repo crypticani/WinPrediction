@@ -34,7 +34,7 @@ class PermanentTeamA(admin.ModelAdmin):
 
 
 class TeamPlayersA(admin.ModelAdmin):
-    list_display = ['get_team_name', 'get_category', 'get_event_name', 'player_name', 'id_number']
+    list_display = ['get_team_name', 'get_category', 'get_event_name', 'player_name', 'id_number', 'is_active']
 
     def get_team_name(self, obj):
         return obj.team_id.team_name
@@ -51,7 +51,7 @@ class TeamPlayersA(admin.ModelAdmin):
     get_event_name.admin_order_field  = 'team_id'  #Allows column order sorting
     #get_event_name.short_description = 'Category'  #Renames column head
 
-    list_filter = ['team_id__category', 'team_id__event_name', 'team_id__team_name',]
+    list_filter = ['team_id__category', 'team_id__event_name', 'team_id__team_name', 'is_active']
     search_fields = ['player_name', 'id_number']
 
 
@@ -73,8 +73,13 @@ class TeamRecordA(admin.ModelAdmin):
     get_winner.admin_order_field  = 'record_id'  #Allows column order sorting
     #get_winner.short_description = 'Winner'  #Renames column head
 
-admin.site.register(TeamEvents)
+
+class TeamEventsA(admin.ModelAdmin):
+    list_display = ['tevent_id', 'events']
+
+admin.site.register(TeamEvents, TeamEventsA)
 admin.site.register(PermanentTeam, PermanentTeamA)
 admin.site.register(TeamPlayers, TeamPlayersA)
 admin.site.register(TeamRegistrationmodel, TeamRegistrationA)
 admin.site.register(TeamRecordModel, TeamRecordA)
+admin.site.register(Categories)

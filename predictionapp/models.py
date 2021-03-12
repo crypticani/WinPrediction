@@ -2,6 +2,14 @@ from django.db import models
 import datetime
 
 
+class Categories(models.Model):
+    category_id = models.AutoField(primary_key=True)
+    category = models.CharField(max_length=10, default="Male")
+
+    def __str__(self):
+        return self.category
+
+
 class TeamEvents(models.Model):
     tevent_id = models.AutoField(primary_key=True)
     events = models.CharField(blank=True, max_length=20)
@@ -15,8 +23,7 @@ class TeamEvents(models.Model):
 
 class PermanentTeam(models.Model):
     id = models.IntegerField(primary_key=True)
-    c = (('Male', 'Male'), ('Female', 'Female'))
-    category = models.CharField(blank=True, max_length=10, choices=c)
+    category = models.ForeignKey(Categories, on_delete=models.SET_NULL, null=True)
     event_name = models.ForeignKey(TeamEvents, on_delete=models.CASCADE)
     team_name = models.CharField(max_length=30)
     captain = models.CharField(max_length=30)
@@ -32,9 +39,11 @@ class PermanentTeam(models.Model):
     
 
 class TeamPlayers(models.Model):
+    player_id = models.AutoField(primary_key=True)
     team_id = models.ForeignKey(PermanentTeam, on_delete=models.CASCADE)
     player_name = models.CharField(max_length=30)
     id_number = models.CharField(max_length=6, default=000000)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "Team Players"
@@ -47,8 +56,7 @@ class TeamPlayers(models.Model):
 class TeamRegistrationmodel(models.Model):
     reg_id = models.AutoField(primary_key=True)
     year = models.IntegerField(default=datetime.date.today().year)
-    c = (('Male', 'Male'), ('Female', 'Female'))
-    category = models.CharField(blank=True, max_length=10, choices=c)
+    category = models.ForeignKey(Categories, on_delete=models.SET_NULL, null=True)
     team_name = models.ForeignKey(PermanentTeam, on_delete=models.CASCADE)
 
     class Meta:
@@ -63,8 +71,7 @@ class TeamRecordModel(models.Model):
     event_id = models.IntegerField()
     event_name = models.ForeignKey(TeamEvents, on_delete=models.CASCADE)
     date = models.DateField(blank=True, null=True)
-    categories = (('Male', 'Male'), ('Female', 'Female'))
-    category = models.CharField(blank=True, max_length=10, choices=categories)
+    category = models.ForeignKey(Categories, on_delete=models.SET_NULL, null=True)
     team1 = models.ForeignKey(TeamRegistrationmodel, related_name='team1', on_delete=models.CASCADE)
     team2 = models.ForeignKey(TeamRegistrationmodel, related_name='team2', on_delete=models.CASCADE)
     score_team1 = models.CharField(blank=True, max_length=30)
