@@ -75,7 +75,7 @@ class TeamRecordA(admin.ModelAdmin):
 
 
 class TeamEventsA(admin.ModelAdmin):
-    list_display = ['tevent_id', 'events']
+    list_display = ['tevent_id', 'events', 'active']
 
 admin.site.register(TeamEvents, TeamEventsA)
 admin.site.register(PermanentTeam, PermanentTeamA)

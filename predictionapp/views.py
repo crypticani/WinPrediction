@@ -42,3 +42,17 @@ def Display(request):
             }
             return render(request, 'display.html', context)
     return render(request, 'display.html', context)
+
+
+def Prediction(request):
+    t1 = get_object_or_404(PermanentTeam, id=280105)
+    t2 = get_object_or_404(PermanentTeam, id=240105)
+    ct1 = TeamRecordModel.objects.filter(winner__team_name=t1)
+    ct2 = TeamRecordModel.objects.filter(winner__team_name=t2)
+    a1 = ct1.count()
+    a2 = ct2.count()
+    print(ct1)
+    total = a1 + a2
+    p1 = round(a1/total*100)
+    p2 = round(a2/total*100)
+    return HttpResponse("Winning Chances of "+ str(t1) + " is "+ str(p1) + "%  <br>"+ str(t2) + " is "+ str(p2) + "%.")

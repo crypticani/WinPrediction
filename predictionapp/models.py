@@ -13,6 +13,7 @@ class Categories(models.Model):
 class TeamEvents(models.Model):
     tevent_id = models.AutoField(primary_key=True)
     events = models.CharField(blank=True, max_length=20)
+    active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "Team Events"
@@ -35,7 +36,7 @@ class PermanentTeam(models.Model):
         verbose_name_plural = "Permanent Teams"
 
     def __str__(self):
-        return str('{} {} {}'.format(self.category, self.event_name, self.team_name))
+        return str('{} {} {}'.format(self.team_name, self.event_name, self.category))
     
 
 class TeamPlayers(models.Model):
