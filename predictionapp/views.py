@@ -53,6 +53,9 @@ def Prediction(request):
     a2 = ct2.count()
     print(ct1)
     total = a1 + a2
-    p1 = round(a1/total*100)
-    p2 = round(a2/total*100)
-    return HttpResponse("Winning Chances of "+ str(t1) + " is "+ str(p1) + "%  <br>"+ str(t2) + " is "+ str(p2) + "%.")
+    if total > 2:
+        p1 = round(a1/total*100)
+        p2 = round(a2/total*100)
+        return HttpResponse("Winning Chances of<br>"+ str(t1) + " is "+ str(p1) + "%  <br>"+ str(t2) + " is "+ str(p2) + "%.")
+    else:
+        return HttpResponse("Not Enough Data to Predict")

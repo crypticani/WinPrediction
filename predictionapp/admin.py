@@ -5,6 +5,14 @@ from .models import *
 admin.site.site_header = "UTSAV Admin Panel"
 admin.site.site_title = "UTSAV Admin Panel"
 
+class TeamPlayersI(admin.TabularInline):
+    model = TeamPlayers
+
+
+class PermanentTeamsI(admin.TabularInline):
+    model = PermanentTeam
+
+
 class TeamRegistrationA(admin.ModelAdmin):
     list_display = ['reg_id', 'year', 'category', 'get_event_name', 'get_team_name', 'get_captain_name']
 
@@ -31,6 +39,7 @@ class PermanentTeamA(admin.ModelAdmin):
     list_display = ['id', 'category', 'event_name', 'team_name', 'captain']
     list_filter = ['category', 'event_name']
     search_fields = ['team_name', 'captain', 'vice_captain']
+    inlines = [TeamPlayersI]
 
 
 class TeamPlayersA(admin.ModelAdmin):
@@ -55,6 +64,16 @@ class TeamPlayersA(admin.ModelAdmin):
     search_fields = ['player_name', 'id_number']
 
 
+class TeamEventsListA(admin.ModelAdmin):
+    list_filter = ['event_name__events', 'category__category']
+    list_display = ['id', 'team1', 'team2', 'datetime', 'venue']
+
+    def get_team1(self, obj):
+        return obj.team1
+
+    def get_team2(self, obj):
+        return obj.team2
+
 class TeamRecordA(admin.ModelAdmin):
     list_display = ['event_id', 'event_name', 'date', 'category', 'get_team1', 'get_team2', 'get_winner']
 
@@ -76,6 +95,7 @@ class TeamRecordA(admin.ModelAdmin):
 
 class TeamEventsA(admin.ModelAdmin):
     list_display = ['tevent_id', 'events', 'active']
+    inlines = [PermanentTeamsI]
 
 admin.site.register(TeamEvents, TeamEventsA)
 admin.site.register(PermanentTeam, PermanentTeamA)
@@ -83,3 +103,4 @@ admin.site.register(TeamPlayers, TeamPlayersA)
 admin.site.register(TeamRegistrationmodel, TeamRegistrationA)
 admin.site.register(TeamRecordModel, TeamRecordA)
 admin.site.register(Categories)
+admin.site.register(TeamEventList, TeamEventsListA)
